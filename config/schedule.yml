@@ -1,8 +1,7 @@
-:jobs:
-  chat_processor_worker:
+chat_processor_worker:
     cron: "*/30 * * * *"
     class: "ChatProcessorWorker"
 
-  message_processor_worker:
-    cron: "*/30 * * * *"
-    class: "MessageProcessorWorker"
+message_processor_worker:
+  cron: "*/30 * * * *"
+  class: "MessageProcessorWorker"
