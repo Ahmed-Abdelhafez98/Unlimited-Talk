@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: talk_scale_development
+    ports:
+      - "3309:3306"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - app-network
+
+  app:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && rails s -b '0.0.0.0'"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+      - elasticsearch
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: mysql2://root:password@db/talk_scale_development
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+  redis-data:
+  es-data:
+
+networks:
+  app-network:
+    driver: bridge
