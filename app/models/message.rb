@@ -4,8 +4,6 @@ class Message < ApplicationRecord
   include Elasticsearch::Model::Callbacks
   belongs_to :chat, counter_cache: true
 
-  before_validation :assign_number, on: :create
-
   validates :number, presence: true, uniqueness: { scope: :chat_id }
   validates :body, presence: true
 
@@ -20,23 +18,13 @@ class Message < ApplicationRecord
       {
         from: from_record,
         size: per_page,
-        query: {
-          "bool": {
-            "must": [
-              { wildcard: { body: "#{query}*" } },
-              { term: { chat_id: chat_id } }
-            ]
-          }
+        query: { "bool": { "must": [
+          { wildcard: { body: "#{query}*" } },
+          { term: { chat_id: chat_id } }] }
         }
       }
     search_definition.merge!({})
 
     __elasticsearch__.search(search_definition)
-  end
-
-  private
-
-  def assign_number
-    self.number = chat.messages.maximum(:number).to_i + 1
   end
 end

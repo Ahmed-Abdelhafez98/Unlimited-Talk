@@ -13,12 +13,16 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @chat = @application.chats.build(chat_params)
+    chat_data = {
+      application_id: @application.id,
+      name: chat_params[:name],
+    }
 
-    if @chat.save
-      render json: @chat.as_json(except: [:id, :application_id]), status: :created, location: [@application, @chat]
-    else
-      render json: @chat.errors, status: :unprocessable_entity
+    begin
+      $redis.rpush("chat_queue", chat_data.to_json)
+      render json: { message: "Chat creation in progress." }, status: :accepted
+    rescue Redis::CannotConnectError
+      render json: { error: "Unable to connect to Redis" }, status: :service_unavailable
     end
   end
 

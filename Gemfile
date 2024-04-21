@@ -15,6 +15,9 @@ gem 'redis'
 gem 'elasticsearch', '~> 7.0'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'sidekiq'
+gem 'sidekiq-cron'
+gem 'whenever', require: false
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
