@@ -1,0 +1,4 @@
+development:
+  host: 'localhost:9200'
+production:
+  host: 'elasticsearch:9200'

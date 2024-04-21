@@ -6,7 +6,7 @@ services:
       - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: talk_scale_development
+      MYSQL_DATABASE: unlimited_talk_development
     ports:
       - "3309:3306"
     networks:
@@ -44,7 +44,7 @@ services:
       - elasticsearch
     environment:
       REDIS_URL: redis://redis:6379/0
-      DATABASE_URL: mysql2://root:password@db/talk_scale_development
+      DATABASE_URL: mysql2://root:password@db/unlimited_talk_development
       ELASTICSEARCH_URL: http://elasticsearch:9200
     networks:
       - app-network

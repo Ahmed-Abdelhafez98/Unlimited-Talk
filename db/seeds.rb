@@ -1,9 +1,22 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Seed Applications
+Application.create
+([
+  { name: "ChatApp", token: SecureRandom.hex(10) },
+  { name: "MessagingService", token: SecureRandom.hex(10) },
+  { name: "NotificationSystem", token: SecureRandom.hex(10) }
+])
+
+# Seed Chats
+Application.all.each do |app|
+  5.times do |i|
+    app.chats.create!(number: i + 1, messages_count: 0, name: "Chat #{i + 1}")
+  end
+end
+
+
+# Seed Messages
+Chat.all.each do |chat|
+  10.times do |i|
+    Message.create(chat_id: chat.id, number: i + 1, body: "Message #{i + 1} in Chat #{chat.number}")
+  end
+end
