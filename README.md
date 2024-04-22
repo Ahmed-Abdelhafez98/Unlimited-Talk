@@ -27,10 +27,13 @@ cd Unlimited-Talk
 sh ./install.sh
 ```
 
-## Check Endpoints
+## API Testing with Postman
 
-Here is a [postman collection](https://api.postman.com/collections/16343939-47b912ef-acaf-4949-807f-571b30e7c9af?access_key=PMAT-01HW26EBHGMCZBGXS3K30819SJ) 
-you will find all the app endpoints inside it
+This project includes a comprehensive Postman collection containing all available API endpoints.
+```
+https://api.postman.com/collections/16343939-47b912ef-acaf-4949-807f-571b30e7c9af?access_key=PMAT-01HW26EBHGMCZBGXS3K30819SJ
+```
+Import the collection from the `Import` button at the top left corner of the Postman window.
 ## Usage
 
 Here's a brief intro about how to use **Project Name**:
