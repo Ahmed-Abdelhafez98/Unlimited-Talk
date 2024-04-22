@@ -22,6 +22,7 @@ class MessagesController < ApplicationController
   end
 
   def create
+    if valid_body?(message_params[:body])
     message_data = {
       chat_id: @chat.id,
       body: message_params[:body],
@@ -32,6 +33,9 @@ class MessagesController < ApplicationController
       render json: { message: "Message creation in progress." }, status: :accepted
     rescue Redis::CannotConnectError
       render json: { error: "Unable to connect to Redis" }, status: :service_unavailable
+    end
+    else
+      render json: { error: "Invalid message name" }, status: :unprocessable_entity
     end
   end
 
@@ -47,6 +51,10 @@ class MessagesController < ApplicationController
 
   def set_message
     @message = @chat.messages.find_by!(number: params[:number])
+  end
+
+  def valid_body?(body)
+    body.present? && body.strip != ""
   end
 
   def message_params

@@ -6,6 +6,7 @@ class MessageProcessorWorker
   def perform
     message_data_jsons = $redis.lrange("message_queue", 0, BATCH_SIZE - 1)
     if message_data_jsons.empty?
+      ElasticsearchReindexService.reindex_messages
       Sidekiq.logger.info "No more messages to process."
       return
     end
@@ -19,9 +20,10 @@ class MessageProcessorWorker
       # After successful insertion, remove these items from the queue
       $redis.ltrim("message_queue", BATCH_SIZE, -1)
 
-      self.class.perform_async
     rescue => e
-      Sidekiq.logger.error "Failed to insert messages: #{e.message}"
+      Sidekiq.logger.error "Failed to insert message: #{e.message}"
+      $redis.ltrim("message_queue", 1, -1)
     end
+    self.class.perform_async
   end
 end

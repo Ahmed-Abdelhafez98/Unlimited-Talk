@@ -17,12 +17,17 @@ class ChatProcessorWorker
       begin
       Chat.insert_all(chat_records)
 
-      # After successful processing, remove these items from the queue
       $redis.ltrim("chat_queue", BATCH_SIZE, -1)
-
-      self.class.perform_async
       rescue => e
-        Sidekiq.logger.error "Failed to insert chats: #{e.message}"
+        handle_error(e)
       end
+    self.class.perform_async
+  end
+
+  private
+
+  def handle_error(exception)
+    Sidekiq.logger.error "Failed to insert chats: #{exception.message}, retrying..."
+    $redis.ltrim("chat_queue", 1, -1)
   end
 end
