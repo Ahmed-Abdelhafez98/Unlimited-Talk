@@ -19,11 +19,6 @@ RUN bundle install
 # Copy the main application.
 COPY . $APP_HOME
 
-# Add a script to be executed every time the container starts.
-COPY entry.sh /usr/bin/
-RUN chmod +x /usr/bin/entry.sh
-ENTRYPOINT ["entry.sh"]
-
 # Expose the port the app runs on.
 EXPOSE 3000
 

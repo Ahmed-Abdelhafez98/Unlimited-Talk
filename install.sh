@@ -9,6 +9,9 @@ docker-compose up -d
 echo "Waiting for database to be ready..."
 sleep 30
 
+echo "Create database..."
+docker-compose exec app rails db:create
+
 echo "Running database migrations..."
 docker-compose exec app rails db:migrate
 

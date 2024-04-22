@@ -1,10 +1,13 @@
 # Seed Applications
-Application.create
-([
+applications = [
   { name: "ChatApp" },
   { name: "MessagingService" },
   { name: "NotificationSystem" }
-])
+]
+
+applications.each do |app|
+  Application.create!(name: app[:name])
+end
 
 # Seed Chats
 Application.all.each do |app|
