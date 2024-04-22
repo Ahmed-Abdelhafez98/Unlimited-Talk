@@ -1,0 +1,7 @@
+chat_processor_worker:
+    cron: "*/30 * * * *"
+    class: "ChatProcessorWorker"
+
+message_processor_worker:
+  cron: "*/30 * * * *"
+  class: "MessageProcessorWorker"

@@ -4,11 +4,8 @@ class Chat < ApplicationRecord
 
   before_validation :set_default_number, on: :create
 
-  validates :number, presence: true, uniqueness: { scope: :application_id }
   validates :name, presence: true
   validates :messages_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-
-  private
 
   def set_default_number
     last_number = self.application.chats.maximum(:number) || 0

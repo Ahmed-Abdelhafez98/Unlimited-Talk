@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_21_022321) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_21_211438) do
   create_table "applications", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.string "token", null: false

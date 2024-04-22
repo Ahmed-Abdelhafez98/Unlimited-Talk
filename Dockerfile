@@ -1,7 +1,7 @@
 FROM ruby:3.0.1
 
 # Install dependencies
-RUN apt-get update -qq && apt-get install -y nodejs npm yarn default-libmysqlclient-dev
+RUN apt-get update -qq && apt-get install -y nodejs npm yarn default-libmysqlclient-dev cron
 
 # Install nodejs and update npm
 RUN npm install
@@ -20,9 +20,9 @@ RUN bundle install
 COPY . $APP_HOME
 
 # Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+COPY entry.sh /usr/bin/
+RUN chmod +x /usr/bin/entry.sh
+ENTRYPOINT ["entry.sh"]
 
 # Expose the port the app runs on.
 EXPOSE 3000

@@ -15,6 +15,9 @@ gem 'redis'
 gem 'elasticsearch', '~> 7.0'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'sidekiq'
+gem 'sidekiq-cron'
+gem 'whenever', require: false
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -47,6 +50,11 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  gem 'rspec-rails', '~> 5.0.0'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem 'rails-controller-testing'
+  gem 'shoulda-matchers', '~> 5.0'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw mswin x64_mingw]
 end

@@ -13,12 +13,20 @@ class ChatsController < ApplicationController
   end
 
   def create
-    @chat = @application.chats.build(chat_params)
+    if valid_name?(chat_params[:name])
+    chat_data = {
+      application_id: @application.id,
+      name: chat_params[:name],
+    }
 
-    if @chat.save
-      render json: @chat.as_json(except: [:id, :application_id]), status: :created, location: [@application, @chat]
+    begin
+      $redis.rpush("chat_queue", chat_data.to_json)
+      render json: { message: "Chat creation in progress." }, status: :accepted
+    rescue Redis::CannotConnectError
+      render json: { error: "Unable to connect to Redis" }, status: :service_unavailable
+    end
     else
-      render json: @chat.errors, status: :unprocessable_entity
+      render json: { error: "Invalid chat name" }, status: :unprocessable_entity
     end
   end
 
@@ -43,6 +51,10 @@ class ChatsController < ApplicationController
 
   def set_chat
     @chat = @application.chats.find_by!(number: params[:number])
+  end
+
+  def valid_name?(name)
+    name.present? && name.strip != "" # Ensures name is not empty or just whitespace
   end
 
   def chat_params

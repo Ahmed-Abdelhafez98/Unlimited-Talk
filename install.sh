@@ -7,7 +7,7 @@ echo "Starting Docker containers..."
 docker-compose up -d
 
 echo "Waiting for database to be ready..."
-sleep 10
+sleep 30
 
 echo "Running database migrations..."
 docker-compose exec app rails db:migrate
@@ -17,5 +17,8 @@ docker-compose exec app rails db:seed
 
 echo "Reindexing Elasticsearch..."
 docker-compose exec app rake es:reindex_messages
+
+echo "Running RSpec tests..."
+docker-compose exec app bundle exec rspec
 
 echo "Installation and setup completed successfully!"
