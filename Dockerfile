@@ -1,10 +1,7 @@
-FROM ruby:3.0.1
+FROM ruby:3.4.12
 
 # Install dependencies
-RUN apt-get update -qq && apt-get install -y nodejs npm yarn default-libmysqlclient-dev cron
-
-# Install nodejs and update npm
-RUN npm install
+RUN apt-get update -qq && apt-get install -y nodejs npm default-libmysqlclient-dev cron
 
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
