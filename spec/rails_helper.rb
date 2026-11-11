@@ -36,7 +36,7 @@ RSpec.configure do |config|
   config.include Rails.application.routes.url_helpers
   config.render_views
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = [Rails.root.join("spec/fixtures")]
 
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
